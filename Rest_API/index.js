@@ -22,23 +22,16 @@ var connection = mysql.createConnection({
 });
 
 //Ouvre la connection à la BDD
-connection.connect(); 
-  
+connection.connect();
+
 
 //Affiche la liste du materiel: id, nom, status, Gaec Associée
 //GET /listeMateriel
-<<<<<<< HEAD
 
-  //console.log(rows);
-  app.get('/listeMateriel', function (req, res) {
-    connection.query('SELECT materiel.id, materiel.nom, materiel.statut, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id', function (err, rows, fields) {
+//console.log(rows);
+app.get('/listeMateriel', function (req, res) {
+  connection.query('SELECT materiel.id, materiel.nom, materiel.statut, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id', function (err, rows, fields) {
     if (err) throw err;
-=======
-connection.query('SELECT materiel.id, materiel.nom, materiel.statut, materiel.position_gps, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id', function (err, rows, fields) {
-  if (err) throw err;
-  //console.log(rows);
-  app.get('/materiel', function (req, res) {
->>>>>>> 8f6527e320badb048acf97c0faa3f90c37085c17
     res.send(rows);
   });
 });
@@ -58,7 +51,7 @@ app.get('/materiel/:id', function (req, res) {
 //Affiche materiel par nom : id, nom, status, Gaec Associée
 //GET /materiel/:nom
 app.get('/materiel/:nom', function (req, res) {
-  var nomMateriel = req.params.nom; 
+  var nomMateriel = req.params.nom;
   console.log(nomMateriel);
 
   connection.query("SELECT materiel.id, materiel.nom, materiel.statut, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id AND materiel.nom LIKE ? ", [nomMateriel], function (err, rows, fields) {
@@ -66,7 +59,7 @@ app.get('/materiel/:nom', function (req, res) {
     //console.log(nomMateriel);
     res.send(rows);
   });
-  
+
 });
 
 //Affiche la liste des agriculteurs: id, nom, prenom, num tel, Gaec Associée
@@ -90,36 +83,24 @@ app.get('/agriculteur/:id', function (req, res) {
 });
 
 //faire une fonction qui va ajouter un agriculteur
-app.post('/agriculteur', function (req, res){
+app.post('/agriculteur', function (req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
- // console.log('INSERT INTO agriculteur (nom, prenom, adresse, telephone, gaec_id, pret_id) VALUES("'+ req.body.nom +'","'+ req.body.prenom + '","' + req.body.adresse +'","'+ req.body.telephone +'",'+ req.body.gaec_id+','+req.body.pret_id+')');
-  connection.query('INSERT INTO agriculteur (nom, prenom, adresse, telephone, gaec_id, pret_id) VALUES("'+ req.body.nom +'","'+ req.body.prenom + '","' + req.body.adresse +'","'+ req.body.telephone +'",'+ req.body.gaec_id+','+req.body.pret_id+')', function (error, results, fields){
-req.body.id = results.insertId;
-res.send(req.body);
-
+  // console.log('INSERT INTO agriculteur (nom, prenom, adresse, telephone, gaec_id, pret_id) VALUES("'+ req.body.nom +'","'+ req.body.prenom + '","' + req.body.adresse +'","'+ req.body.telephone +'",'+ req.body.gaec_id+','+req.body.pret_id+')');
+  connection.query('INSERT INTO agriculteur (nom, prenom, adresse, telephone, gaec_id, pret_id) VALUES("' + req.body.nom + '","' + req.body.prenom + '","' + req.body.adresse + '","' + req.body.telephone + '",' + req.body.gaec_id + ',' + req.body.pret_id + ')', function (error, results, fields) {
+    req.body.id = results.insertId;
+    res.send(req.body);
   });
 
- 
-  // var bodyAgriculteur = req.body
-  // connection.query('insert into agriculteur (nom, prenom, adresse, telephone, gaec_id, pret_id) values ?, ?' , [bodyAgriculteur.nom], [bodyAgriculteur.prenom] function (err, rows, fields){
-  //   if (err) throw err;
-  //   console.log("ok");
-  // });
-
-    
-
-
-  //connexion.query(insert into )
 });
 
-
-
-
-
-
-//Fermeture de la connection à la BDD
-//connection.end();
+app.post('/materiel', function (req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  connection.query('INSERT INTO materiel (nom, description, position_gps, statut, gaec_id, pret_id) VALUES("' + req.body.nom + '","' + req.body.description + '","' + req.body.position_gps + '","' + req.body.statut + '",' + req.body.gaec_id + ',' + req.body.pret_id + ')', function (error, results, fields) {
+    req.body.id = results.insertId;
+    res.send(req.body);
+  });
+});
 
 app.listen(3000, function () {
   console.log('Back-end app working on port 3000!');
-})
+});
