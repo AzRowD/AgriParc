@@ -101,6 +101,22 @@ app.post('/materiel', function (req, res) {
   });
 });
 
+
 app.listen(3000, function () {
   console.log('Back-end app working on port 3000!');
 });
+
+app.delete('/materiel/:id', function (req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  connection.query('DELETE FROM materiel WHERE materiel.id = ' + req.params.id + ';', function (error, results, fields) {
+    console.log(error);
+    var idMateriel = req.params.id;
+    res.send(req.params);
+  }
+  )
+});
+
+
+
+
+
