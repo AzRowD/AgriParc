@@ -1,17 +1,23 @@
 //Initialisation express.js
 const express = require('express');
 const app = express();
+app.use(express.json());
+var bodyParser = require("body-parser");
+var jsonParser = bodyParser.json()
+app.use(bodyParser.text({ type: 'text/html' }))
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-var cors = require('cors');
+
+const cors = require('cors');
 app.use(cors());
 
 //Initialisation BDD MySQL
 var mysql = require('mysql');
 var connection = mysql.createConnection({
   host: 'localhost',
-  port: '8889',
-  user: 'root3',
-  password: '123456',
+  port: '3306',
+  user: 'root',
+  password: '',
   database: 'agriparc_db'
 });
 
@@ -21,12 +27,13 @@ connection.connect();
 
 //Affiche la liste du materiel: id, nom, status, Gaec Associée
 //GET /listeMateriel
-connection.query('SELECT materiel.id, materiel.nom, materiel.statut, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id', function (err, rows, fields) {
-  if (err) throw err;
+
   //console.log(rows);
   app.get('/listeMateriel', function (req, res) {
+    connection.query('SELECT materiel.id, materiel.nom, materiel.statut, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id', function (err, rows, fields) {
+    if (err) throw err;
     res.send(rows);
-  })
+  });
 });
 
 
@@ -69,6 +76,30 @@ app.get('/agriculteur/:id', function (req, res) {
     res.send(rows);
   });
 });
+
+//faire une fonction qui va ajouter un agriculteur
+app.post('/agriculteur', function (req, res){
+  res.setHeader('Access-Control-Allow-Origin', '*');
+ // console.log('INSERT INTO agriculteur (nom, prenom, adresse, telephone, gaec_id, pret_id) VALUES("'+ req.body.nom +'","'+ req.body.prenom + '","' + req.body.adresse +'","'+ req.body.telephone +'",'+ req.body.gaec_id+','+req.body.pret_id+')');
+  connection.query('INSERT INTO agriculteur (nom, prenom, adresse, telephone, gaec_id, pret_id) VALUES("'+ req.body.nom +'","'+ req.body.prenom + '","' + req.body.adresse +'","'+ req.body.telephone +'",'+ req.body.gaec_id+','+req.body.pret_id+')', function (error, results, fields){
+req.body.id = results.insertId;
+res.send(req.body);
+
+  });
+
+ 
+  // var bodyAgriculteur = req.body
+  // connection.query('insert into agriculteur (nom, prenom, adresse, telephone, gaec_id, pret_id) values ?, ?' , [bodyAgriculteur.nom], [bodyAgriculteur.prenom] function (err, rows, fields){
+  //   if (err) throw err;
+  //   console.log("ok");
+  // });
+
+    
+
+
+  //connexion.query(insert into )
+});
+
 
 
 
