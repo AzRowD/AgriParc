@@ -27,11 +27,18 @@ connection.connect();
 
 //Affiche la liste du materiel: id, nom, status, Gaec Associée
 //GET /listeMateriel
+<<<<<<< HEAD
 
   //console.log(rows);
   app.get('/listeMateriel', function (req, res) {
     connection.query('SELECT materiel.id, materiel.nom, materiel.statut, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id', function (err, rows, fields) {
     if (err) throw err;
+=======
+connection.query('SELECT materiel.id, materiel.nom, materiel.statut, materiel.position_gps, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id', function (err, rows, fields) {
+  if (err) throw err;
+  //console.log(rows);
+  app.get('/materiel', function (req, res) {
+>>>>>>> 8f6527e320badb048acf97c0faa3f90c37085c17
     res.send(rows);
   });
 });
@@ -41,7 +48,8 @@ connection.connect();
 //GET /listeMateriel/:id
 app.get('/materiel/:id', function (req, res) {
   var idMateriel = req.params.id;
-  connection.query('SELECT materiel.id, materiel.nom, materiel.statut, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id AND  materiel.id = ?', [idMateriel], function (err, rows, fields) {
+  console.log(idMateriel);
+  connection.query('SELECT materiel.id, materiel.nom, materiel.statut, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id AND materiel.id = ?', [idMateriel], function (err, rows, fields) {
     if (err) throw err;
     res.send(rows);
   });
@@ -50,11 +58,15 @@ app.get('/materiel/:id', function (req, res) {
 //Affiche materiel par nom : id, nom, status, Gaec Associée
 //GET /materiel/:nom
 app.get('/materiel/:nom', function (req, res) {
-  var nomMateriel = "%" + req.params.nom + "%";
+  var nomMateriel = req.params.nom; 
+  console.log(nomMateriel);
+
   connection.query("SELECT materiel.id, materiel.nom, materiel.statut, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id AND materiel.nom LIKE ? ", [nomMateriel], function (err, rows, fields) {
     if (err) throw err;
+    //console.log(nomMateriel);
     res.send(rows);
   });
+  
 });
 
 //Affiche la liste des agriculteurs: id, nom, prenom, num tel, Gaec Associée
@@ -62,7 +74,7 @@ app.get('/materiel/:nom', function (req, res) {
 connection.query('SELECT agriculteur.id, agriculteur.nom, agriculteur.prenom, agriculteur.telephone, gaec.nom_gaec AS Gaec FROM agriculteur, gaec WHERE agriculteur.gaec_id = gaec.id', function (err, rows, fields) {
   if (err) throw err;
   //console.log(rows);
-  app.get('/listeAgriculteurs', function (req, res) {
+  app.get('/agriculteur', function (req, res) {
     res.send(rows);
   });
 });
