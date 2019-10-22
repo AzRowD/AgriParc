@@ -64,10 +64,10 @@ app.get('/materiel/:nom', function (req, res) {
 
 //Affiche la liste des agriculteurs: id, nom, prenom, num tel, Gaec Associée
 //GET /listeAgriculteurs
-connection.query('SELECT agriculteur.id, agriculteur.nom, agriculteur.prenom, agriculteur.telephone, gaec.nom_gaec AS Gaec FROM agriculteur, gaec WHERE agriculteur.gaec_id = gaec.id', function (err, rows, fields) {
-  if (err) throw err;
-  //console.log(rows);
-  app.get('/agriculteur', function (req, res) {
+//console.log(rows);
+app.get('/agriculteur', function (req, res) {
+  connection.query('SELECT agriculteur.id, agriculteur.nom, agriculteur.prenom, agriculteur.telephone, gaec.nom_gaec AS Gaec FROM agriculteur, gaec WHERE agriculteur.gaec_id = gaec.id', function (err, rows, fields) {
+    if (err) throw err;
     res.send(rows);
   });
 });
