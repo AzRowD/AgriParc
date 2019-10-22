@@ -2,6 +2,124 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
+        <h4 class="card-title"> Liste du matériel</h4>
+        <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
+          <div class="input-group no-border">
+            <input type="text" id="recherche" class="form-control" placeholder="Rechercher...">
+
+            <!-- <div class="input-group-append">
+              <div class="input-group-text">
+              </div> 
+            </div> -->
+            <button type="submit" class="btn btn-primary btn-fab btn-icon btn-round nc-icon nc-zoom-split"></button>
+          </div>
+
+        </form>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+              <th>id</th>
+              <th>Nom</th>
+              <th>Statut</th>
+              <th>Position GPS</th>
+              <th>GAEC</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let tab of this.listeMaterielc">
+                <td>{{tab.id}}</td>
+                <td>{{tab.nom}}</td>
+                <td>{{tab.statut}}</td>
+                <td>{{tab.position_gps}}</td>
+                <td>{{tab.Gaec}}</td>
+                <td><i ng-click="deleteController.removeRow(tab.id)" class="nc-icon nc-simple-remove"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+
+  <div class="col-lg-3">
+    <div class="card ">
+      <div class="card-body ">
+        <form class="col-lg-12 col-md-12 col-sm-12 form-group">
+
+          <div>
+            <h4>Tracteur Massey Ferguson</h4>
+          </div>
+
+          <div>
+            <p class="alert alert-info">barre oscillante : oui chargeur faucheux pretisge 120 annee 2008 circuit centre
+              : ouvert distributeur cde manuelle : 2 etat mecanique : moyen etat poste conduite : bon inverseur :
+              hydraulique nombre cylindre : 4 nombre de gamme : 4 nombre de vitesse : 6 piton : oui prise de force
+              arriere : 540/1000 relevage : electronique siege : pneumatique suspension : mecanique transmission : semi
+              power shift type jante arriere : fixe type jante avant : pontet</p>
+          </div>
+
+          <div>
+            <p class="alert alert-success">DISPONIBLE</p>
+          </div>
+
+
+
+
+          <div>
+            <input class="alert alert-primary" type="date" id="start" name="resa-start">
+
+            <input class="alert alert-primary" type="date" id="stop" name="resa-stop">
+          </div>
+
+
+
+          <button class="btn btn-primary btn-round" type="submit">Reserver</button>
+
+
+        </form>
+      </div>
+
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+  <div class="col-lg-9">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card ">
+          <h4 class="card-header ">
+            Carte
+          </h4>
+          <div class="card-body ">
+              <div>
+                <img class="card-img-bottom" alt="Card image cap"
+                  src="https://www.vertical-leap.uk/wp-content/uploads/2017/11/map.jpg"
+                  sizes="(max-width: 1400px) 100vw, 1400px"></div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+
+<!-- <div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
         <h4 class="card-title"> Simple Table</h4>
       </div>
       <div class="card-body">
@@ -126,132 +244,4 @@
       </div>
     </div>
   </div>
-  <div class="col-md-12">
-    <div class="card card-plain">
-      <div class="card-header">
-        <h4 class="card-title"> Table on Plain Background</h4>
-        <p class="card-category"> Here is a subtitle for this table</p>
-      </div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table">
-            <thead class=" text-primary">
-              <th>
-                Name
-              </th>
-              <th>
-                Country
-              </th>
-              <th>
-                City
-              </th>
-              <th class="text-right">
-                Salary
-              </th>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  Dakota Rice
-                </td>
-                <td>
-                  Niger
-                </td>
-                <td>
-                  Oud-Turnhout
-                </td>
-                <td class="text-right">
-                  $36,738
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Minerva Hooper
-                </td>
-                <td>
-                  Curaçao
-                </td>
-                <td>
-                  Sinaai-Waas
-                </td>
-                <td class="text-right">
-                  $23,789
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Sage Rodriguez
-                </td>
-                <td>
-                  Netherlands
-                </td>
-                <td>
-                  Baileux
-                </td>
-                <td class="text-right">
-                  $56,142
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Philip Chaney
-                </td>
-                <td>
-                  Korea, South
-                </td>
-                <td>
-                  Overland Park
-                </td>
-                <td class="text-right">
-                  $38,735
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Doris Greene
-                </td>
-                <td>
-                  Malawi
-                </td>
-                <td>
-                  Feldkirchen in Kärnten
-                </td>
-                <td class="text-right">
-                  $63,542
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Mason Porter
-                </td>
-                <td>
-                  Chile
-                </td>
-                <td>
-                  Gloucester
-                </td>
-                <td class="text-right">
-                  $78,615
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Jon Porter
-                </td>
-                <td>
-                  Portugal
-                </td>
-                <td>
-                  Gloucester
-                </td>
-                <td class="text-right">
-                  $98,615
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+</div> -->

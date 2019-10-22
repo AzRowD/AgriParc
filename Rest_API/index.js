@@ -9,9 +9,9 @@ app.use(cors());
 var mysql = require('mysql');
 var connection = mysql.createConnection({
   host: 'localhost',
-  port: '8889',
-  user: 'root3',
-  password: '123456',
+  port: '3306',
+  user: 'root',
+  password: '',
   database: 'agriparc_db'
 });
 
@@ -21,10 +21,10 @@ connection.connect();
 
 //Affiche la liste du materiel: id, nom, status, Gaec Associée
 //GET /listeMateriel
-connection.query('SELECT materiel.id, materiel.nom, materiel.statut, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id', function (err, rows, fields) {
+connection.query('SELECT materiel.id, materiel.nom, materiel.statut, materiel.position_gps, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id', function (err, rows, fields) {
   if (err) throw err;
   //console.log(rows);
-  app.get('/listeMateriel', function (req, res) {
+  app.get('/materiel', function (req, res) {
     res.send(rows);
   })
 });
@@ -34,7 +34,8 @@ connection.query('SELECT materiel.id, materiel.nom, materiel.statut, gaec.nom_ga
 //GET /listeMateriel/:id
 app.get('/materiel/:id', function (req, res) {
   var idMateriel = req.params.id;
-  connection.query('SELECT materiel.id, materiel.nom, materiel.statut, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id AND  materiel.id = ?', [idMateriel], function (err, rows, fields) {
+  console.log(idMateriel);
+  connection.query('SELECT materiel.id, materiel.nom, materiel.statut, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id AND materiel.id = ?', [idMateriel], function (err, rows, fields) {
     if (err) throw err;
     res.send(rows);
   });
@@ -43,11 +44,15 @@ app.get('/materiel/:id', function (req, res) {
 //Affiche materiel par nom : id, nom, status, Gaec Associée
 //GET /materiel/:nom
 app.get('/materiel/:nom', function (req, res) {
-  var nomMateriel = "%" + req.params.nom + "%";
+  var nomMateriel = req.params.nom; 
+  console.log(nomMateriel);
+
   connection.query("SELECT materiel.id, materiel.nom, materiel.statut, gaec.nom_gaec AS Gaec FROM materiel, gaec WHERE materiel.gaec_id = gaec.id AND materiel.nom LIKE ? ", [nomMateriel], function (err, rows, fields) {
     if (err) throw err;
+    //console.log(nomMateriel);
     res.send(rows);
   });
+  
 });
 
 //Affiche la liste des agriculteurs: id, nom, prenom, num tel, Gaec Associée
@@ -55,7 +60,7 @@ app.get('/materiel/:nom', function (req, res) {
 connection.query('SELECT agriculteur.id, agriculteur.nom, agriculteur.prenom, agriculteur.telephone, gaec.nom_gaec AS Gaec FROM agriculteur, gaec WHERE agriculteur.gaec_id = gaec.id', function (err, rows, fields) {
   if (err) throw err;
   //console.log(rows);
-  app.get('/listeAgriculteurs', function (req, res) {
+  app.get('/agriculteur', function (req, res) {
     res.send(rows);
   });
 });
